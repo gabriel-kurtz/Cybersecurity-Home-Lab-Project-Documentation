@@ -1,6 +1,6 @@
 # Cybersecurity Home Lab — Project Documentation
 
-**Author:** [Your Name]
+**Author:** Gabriel Kurtz
 **Tools used:** VirtualBox 7.2.16, Kali Linux, Metasploitable2, Nmap, Metasploit Framework
 
 ## Overview
@@ -21,8 +21,7 @@ Both VMs were connected via a **VirtualBox Host-only Network**, which isolates
 lab traffic from the host machine's real network — nothing here reaches the
 public internet or the home network.
 
-*(Optional: add a simple network diagram here — two boxes labeled Kali and
-Metasploitable2, connected by a line labeled "Host-only network 192.168.83.0/24".)*
+
 
 ## Setup Summary
 
@@ -178,17 +177,4 @@ escalation was necessary, as this backdoor grants root access directly.
 - Some Metasploit exploits require `LHOST` to be set manually when using a
   reverse-connecting payload — without it, the module will fail validation.
 
-## Next Steps
 
-- [ ] Add a Windows 10 VM and begin basic Windows networking/firewall exercises
-- [ ] Set up Windows Server and promote it to a Domain Controller (Active Directory)
-- [ ] Explore Active Directory attack paths with BloodHound
-- [ ] Set up Splunk or the ELK stack to log and detect activity from this lab
-- [ ] Try a second exploit against Metasploitable2 (e.g., Samba on port 445)
-
----
-
-*This document was compiled as a working reference for building out a public
-GitHub repository README. Screenshots referenced above but not included
-should be re-captured from your VM if you still have the terminal scrollback,
-or recreated by re-running the corresponding command.*
