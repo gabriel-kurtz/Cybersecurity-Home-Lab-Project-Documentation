@@ -46,7 +46,7 @@ kali@kali:~$ ping 192.168.83.3
 33 packets transmitted, 33 received, 0% packet loss
 ```
 
-![Successful ping confirming connectivity between Kali and Metasploitable2](screenshots/ping-success.png)
+![Successful ping confirming connectivity between Kali and Metasploitable2](PingSuccess.png)
 
 ## Step 2: Network Reconnaissance (Nmap)
 
