@@ -29,9 +29,8 @@ public internet or the home network.
 2. Downloaded and imported Metasploitable2 as the target VM.
 3. Created a VirtualBox Host-only Network so both VMs could communicate
    without touching the host's real network.
-4. Assigned each VM an IP on that network — Metasploitable2 received one
+4. Assigned each VM an IP on that network. Metasploitable2 received one
    automatically via DHCP; Kali was configured with a static IP
-   (`192.168.83.10/24`) after troubleshooting a DHCP connectivity issue.
 5. Verified connectivity between the two VMs with `ping`.
 
 ## Step 1: Verify Connectivity
@@ -77,30 +76,31 @@ machine by exploiting the vsftpd 2.3.4 command-execution backdoor.
 escalation was necessary, as this backdoor grants root access directly.
 
 
-## Skills Demonstrated
+## Step 4: Second Exploit — Samba usermap_script (Command Injection)
 
+To reinforce the recon → exploit → verify workflow, and to demonstrate a second, distinct vulnerability class, the Samba service (ports 139/445) identified in the earlier Nmap scan was also targeted.
+
+Unlike the vsftpd exploit, which relies on an backdoor, this vulnerability is a command injection flaw in how older Samba versions handle the username map script configuration option, allowing arbitrary shell commands to be executed remotely.
+
+![Searching for the usermap_script exploit module](screenshots/search_usermap_script.png)
+![Running the usermap_script exploit against Metasploitable2](screenshots/use_exploit_usermap.png)
+
+Verifying access level:
+
+![Root access confirmed via whoami/id/uname on the Samba exploit](screenshots/usermap_script_whoami.png)
+
+Result: gained a second, independent root-level command shell on the target — this time via a command injection vulnerability rather than a backdoor, demonstrating a different exploitation technique against a different service.
+
+## Skills Demonstrated
 - Virtual network design and isolation (VirtualBox host-only networking)
-- Linux network configuration and troubleshooting (static IP assignment,
-  diagnosing DHCP failures, subnet mismatches)
+- Linux network configuration and troubleshooting (static IP assignment, diagnosing DHCP failures, subnet mismatches)
 - Network reconnaissance and service enumeration using Nmap
 - Vulnerability identification from service/version banners
-- Exploitation using the Metasploit Framework (module selection, payload
-  configuration, `RHOSTS`/`LHOST` setup)
-
-## Lessons Learned / Troubleshooting Notes
-
-- Two VMs on different VirtualBox host-only networks (or different subnets)
-  cannot communicate even if both show "Host-only Adapter" — the network
-  *name* and subnet must match exactly.
-- When DHCP fails on a VM, assigning a static IP with `ip addr add` is a
-  fast, reliable workaround for a small lab, even if it doesn't persist
-  across reboots.
-- Some Metasploit exploits require `LHOST` to be set manually when using a
-  reverse-connecting payload — without it, the module will fail validation.
+- Exploitation using the Metasploit Framework (module selection, payload configuration, RHOSTS/LHOST setup)
+- Distinguishing between different vulnerability classes (backdoor vs. command injection) and adapting exploitation approach accordingly
 
 ## Next Steps
 - Add a Windows 10 VM and begin basic Windows networking/firewall exercises
 - Set up Windows Server and promote it to a Domain Controller (Active Directory)
 - Explore Active Directory attack paths with BloodHound
 - Set up Splunk or the ELK stack to log and detect activity from this lab
-- Try a second exploit against Metasploitable2 (e.g., Samba on port 445)
